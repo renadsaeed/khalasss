@@ -275,6 +275,11 @@ export default function Flutterbar() {
               )
             )}
           </div>
+          {!loading && searchTerm.trim() && results.length === 0 && (
+            <p className="text-center text-xl text-red-500 mt-6">
+              لا توجد نتائج مطابقة للبحث.
+            </p>
+          )}
           {loading && <p className="mt-4 text-lg">جاري تحميل النتائج...</p>}
         </div>
       </div>

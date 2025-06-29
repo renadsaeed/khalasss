@@ -36,6 +36,7 @@ import Statisticsdashoard from "./Components/Dashboard/Statisticsdashoard";
 import AddDonationForm from "./Components/Dashboard/AddDonationForm";
 import AddVolunteeringForm from "./Components/Dashboard/AddVolunteeringForm";
 import UserProfileModern from "./Components/user/UserProfileModern";
+import UserProfile from "./Components/user/UserProfile";
 import Volunteering, {
   Loader as volanteringLoader,
 } from "./Components/Dashboard/Volunteering";
@@ -60,8 +61,8 @@ const router = createBrowserRouter([
         element: <Donation />,
       },
       {
-        path: "/UserProfileModern",
-        element: <UserProfileModern />,
+        path: "/UserProfile",
+        element: <UserProfile />,
       },
       {
         path: "/LostAndFoundPage",
@@ -79,6 +80,10 @@ const router = createBrowserRouter([
       {
         path: "/Donation/DonateNow",
         element: <DonateNow />,
+      },
+      {
+        path: "/user/:id",
+        element: <UserProfileModern />,
       },
       {
         path: "/Volantering/:opportunityId",

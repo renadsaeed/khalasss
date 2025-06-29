@@ -150,7 +150,7 @@ export default function Helpdetails({ id, ref, rest, title }) {
               />
             </Link>
             <Link
-              to={`/user/profile/${details.createdById}`}
+              to={`/user/${details.createdById}`}
               className="text-lg font-bold text-[#183153] hover:text-[#0D8F75] hover:underline"
             >
               {details.createdByName}

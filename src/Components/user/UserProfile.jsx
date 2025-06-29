@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { getAuthToken } from "../../util/auth";
 
 export default function UserProfile() {
   const navigate = useNavigate();
@@ -23,13 +24,20 @@ export default function UserProfile() {
     name: "اسم المستخدم",
     img: "/user.png",
   });
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI2NzIyYmM5Yy03YWE2LTQ1N2QtODFmYy0zM2Y2NGUzMDhlM2QiLCJlbWFpbCI6Im5hYmlsbm9yaGFuMzI0QGdtYWlsLmNvbSIsInVuaXF1ZV9uYW1lIjoiTm9yaGFuIE5hYmlsIEFsaSBFbCBTYXllZCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL21vYmlsZXBob25lIjoiMDEwNjE3MzUwMzEiLCJyb2xlIjoiVXNlciIsIm5iZiI6MTc1MDk1ODUxNCwiZXhwIjoxNzUzNTUwNTE0LCJpYXQiOjE3NTA5NTg1MTQsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwMTMiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDEzIn0.PuR2fDqDjdJUTVlDPQ9L_2mOaywgTsNOH6Wf56PtnGE";
-
+  const token = getAuthToken();
   useEffect(() => {
-    fetch(
-      "https://waslalkhair.runasp.net/api/User/e3476806-880a-4a7d-87fb-093559f1f90f"
-    )
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser)); // 👈 استرجاع بيانات الجمعية
+    }
+  }, []);
+
+  if (!user) {
+    console.log("user is null");
+  }
+  console.log("user ID هو:");
+  useEffect(() => {
+    fetch(`https://waslalkhair.runasp.net/api/User/${user.id}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.result) {
@@ -86,7 +94,7 @@ export default function UserProfile() {
   useEffect(() => {
     const userId = "6722bc9c-7aa6-457d-81fc-33f64e308e3d";
     fetch(
-      `https://waslalkhair.runasp.net/api/Assistance/GetAssistancesByUser/${userId}`,
+      `https://waslalkhair.runasp.net/api/Assistance/GetAssistancesByUser/${user.id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

@@ -30,6 +30,17 @@ const UserProfileModern = () => {
   const [loadingAssistances, setLoadingAssistances] = useState(true);
   const detailsRef = useRef();
   const [selectedItem, setSelectedItem] = useState(null);
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser)); // 👈 استرجاع بيانات الجمعية
+    }
+  }, []);
+
+  if (!user) {
+    console.log("user is null");
+  }
+  console.log("user ID هو:");
 
   const openModal = (item) => {
     setSelectedItem(item);
@@ -62,9 +73,24 @@ const UserProfileModern = () => {
       });
     console.log("participations info", participations);
     // جلب المساعدات
-    const userId = "6722bc9c-7aa6-457d-81fc-33f64e308e3d"; // استبدليه بالـ id الديناميكي إذا كان متوفر
+    // استبدليه بالـ id الديناميكي إذا كان متوفر
+
+    // جلب بيانات المستخدم
     fetch(
-      `https://waslalkhair.runasp.net/api/Assistance/GetAssistancesByUser/${userId}`,
+      "https://waslalkhair.runasp.net/api/User/62053af1-974d-42d2-a78f-9d85c32b7eb9"
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.result) setUser(data.result);
+      });
+  }, []);
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const token = getAuthToken();
+
+    fetch(
+      `https://waslalkhair.runasp.net/api/Assistance/GetAssistancesByUser/${user.id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -84,25 +110,17 @@ const UserProfileModern = () => {
       .catch((err) => {
         setLoadingAssistances(false);
       });
+  }, [user]);
 
-    // جلب بيانات المستخدم
-    fetch(
-      "https://waslalkhair.runasp.net/api/User/62053af1-974d-42d2-a78f-9d85c32b7eb9"
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.result) setUser(data.result);
-      });
-  }, []);
-  console.log("participations info", assistances);
+  console.log("assistances info", assistances);
   const [reviews, setReviews] = useState([]);
   const [loadingReviews, setLoadingReviews] = useState(true);
 
   const fetchReviews = () => {
-    const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI2NzIyYmM5Yy03YWE2LTQ1N2QtODFmYy0zM2Y2NGUzMDhlM2QiLCJlbWFpbCI6Im5hYmlsbm9yaGFuMzI0QGdtYWlsLmNvbSIsInVuaXF1ZV9uYW1lIjoiTm9yaGFuIE5hYmlsIEFsaSBFbCBTYXllZCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL21vYmlsZXBob25lIjoiMDEwNjE3MzUwMzEiLCJyb2xlIjoiVXNlciIsIm5iZiI6MTc1MDk1ODUxNCwiZXhwIjoxNzUzNTUwNTE0LCJpYXQiOjE3NTA5NTg1MTQsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwMTMiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDEzIn0.PuR2fDqDjdJUTVlDPQ9L_2mOaywgTsNOH6Wf56PtnGE";
-    const id = "62053af1-974d-42d2-a78f-9d85c32b7eb9";
-    fetch(`https://waslalkhair.runasp.net/api/Reviews/${id}`, {
+    if (!user?.id) return;
+    const token = getAuthToken();
+
+    fetch(`https://waslalkhair.runasp.net/api/Reviews/${user.id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: "application/json",
@@ -123,21 +141,11 @@ const UserProfileModern = () => {
   };
 
   useEffect(() => {
-    fetchReviews();
-  }, []);
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser)); // 👈 استرجاع بيانات الجمعية
+    if (user?.id) {
+      fetchReviews();
     }
-  }, []);
-
-  if (!user) {
-    console.log("user is null");
-    return <p>جاري التحميل...</p>;
-  }
-  console.log("user ID هو:");
-  console.log(user.id);
+  }, [user?.id]);
+  console.log("reviwes", reviews);
 
   // بعد إضافة تقييم جديد بنجاح:
   const handleAddReview = () => {
@@ -149,26 +157,33 @@ const UserProfileModern = () => {
   return (
     <div>
       {/* معلومات المستخدم والتقييم */}
-      <div className="flex justify-start items-center my-10">
-        <div className="flex flex-row items-center gap-10">
-          <img
-            src={user?.image || "صورة"}
-            alt="user"
-            className="w-32 h-32 rounded-full object-cover mr-6 border-4 border-white shadow-lg"
-          />
-          <div className="text-right">
-            <div className="font-bold text-3xl text-[#183153]">
-              {user.fullName || "اسم المستخدم"}
-            </div>
-            <div className="text-xl my-2">
-              {user.phoneNumber || "رقم الهاتف"}
-            </div>
-            <div className="text-gray-500 text-lg">
-              {user.email || "الإيميل"}
+      {user ? (
+        <div className="flex justify-start items-center my-10">
+          <div className="flex flex-row items-center gap-10">
+            <img
+              src={user?.image || "صورة"}
+              alt="user"
+              className="w-32 h-32 rounded-full object-cover mr-6 border-4 border-white shadow-lg"
+            />
+            <div className="text-right">
+              <div className="font-bold text-3xl text-[#183153]">
+                {user.fullName || "اسم المستخدم"}
+              </div>
+              <div className="text-xl my-2">
+                {user.phoneNumber || "رقم الهاتف"}
+              </div>
+              <div className="text-gray-500 text-lg">
+                {user.email || "الإيميل"}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="text-center my-10 text-gray-500 text-xl">
+          جاري تحميل بيانات المستخدم...
+        </div>
+      )}
+
       <h2
         style={{
           textAlign: "center",
@@ -280,6 +295,14 @@ const UserProfileModern = () => {
           })
         )}
       </div>
+      {selectedItem && (
+        <Helpdetails
+          id={selectedItem.id}
+          title={selectedItem.title}
+          ref={detailsRef}
+          rest={closeModal}
+        />
+      )}
 
       {/* 🟢 أضف Helpdetails هنا مباشرة بعد الmap */}
 

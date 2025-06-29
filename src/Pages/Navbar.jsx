@@ -106,11 +106,15 @@ export default function Navbar() {
             </div>
 
             {/* Links */}
-            <div className="  sing-con flex text-xl xl:pr-[20px] lg:justify-around md:justify-end items-center">
-              <p className="ic sm:hidden md:block md:ml-[15px]  bg-[#0D8F75] w-[50px] rounded-md flex justify-center pr-[9px] ">
-                <CiUser className="inline-block  text-3xl text-[#FFFFFF]   " />
-              </p>
 
+            <div className="  sing-con flex text-xl xl:pr-[20px] lg:justify-around md:justify-end items-center">
+              {role && (
+                <Link to="/UserProfile" className="nav-links-mobile lg:text-lg">
+                  <p className="ic sm:hidden md:block md:ml-[15px] bg-[#0D8F75] w-[50px] rounded-md flex justify-center pr-[9px] ">
+                    <CiUser className="inline-block text-3xl text-[#FFFFFF]" />
+                  </p>
+                </Link>
+              )}
               {role ? (
                 <Link
                   onClick={onLogout}
@@ -141,11 +145,8 @@ export default function Navbar() {
               <p className="ml-3 pr-6   lg:text-xl xl:text-2xl ">وصل الخير</p>
             </div>
             <div className="sing-con flex items-center text-xl">
-              <Link
-                to="/UserProfileModern"
-                className="nav-links-mobile lg:text-lg"
-              >
-                <div className="ml-[6px] w-[80px] h-[80px] bg-[#0D8F75] border-none outline-0 rounded-md flex justify-center items-center">
+              <Link to="/UserProfile" className="nav-links-mobile lg:text-lg">
+                <div className="ml-[6px] w-[50px] h-[50px] bg-[#0D8F75] border-none outline-0 rounded-md flex justify-center items-center">
                   <CiUser className="text-3xl text-white" />
                 </div>
               </Link>

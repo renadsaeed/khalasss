@@ -1,0 +1,16 @@
+@media (min-width: 1280px) and (max-width: 1399px) {
+  .search {
+    display: none;
+  }
+  .icon-se {
+    display: none;
+  }
+}
+@media (min-width: 320px) and (max-width: 1280px) {
+  .search {
+    display: none;
+  }
+  .icon-se {
+    display: none;
+  }
+}

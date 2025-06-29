@@ -1,0 +1,79 @@
+.custom-calendar {
+  width: 50%;
+  height: 40%;
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+
+.custom-calendar .react-calendar__tile {
+  padding: 3px;
+  border-radius: 6px;
+  transition: background 0.3s ease-in-out;
+}
+.btn {
+  color: white;
+}
+
+.custom-calendar .react-calendar__tile:hover {
+  background: #0d8f75;
+  color: white;
+}
+
+.custom-calendar .react-calendar__tile--active {
+  background: #0d8f75 !important;
+  color: white !important;
+  font-weight: bold;
+}
+
+.custom-calendar .react-calendar__navigation button {
+  font-size: 15px;
+  font-weight: bold;
+  color: #0d8f75;
+}
+.filed {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+  padding-right: 5px;
+}
+.filed label {
+  font-size: 18px;
+  padding-bottom: 5px;
+}
+.frist {
+  padding-top: 20px;
+}
+.filed input {
+  background-color: transparent;
+  border: 1px solid #737373;
+  border-radius: 6px;
+  padding: 7px;
+  width: 90%;
+  outline: none;
+}
+.clend {
+  width: 90%;
+}
+.step {
+  position: absolute;
+  width: 20px;
+  border: 2px solid white;
+  font-size: 12px;
+  line-height: px;
+  border-radius: 50%;
+  height: 20px;
+  top: 2px;
+  text-align: center;
+  background-color: #5b6e88;
+  color: white !important;
+}
+
+.step.active {
+  background-color: #214570;
+}
+
+input:invalid:focus:after {
+  content: none; /* هينظف التوجل */
+}

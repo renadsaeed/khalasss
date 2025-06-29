@@ -1,0 +1,67 @@
+.drop:hover {
+  background: #eee;
+  transition: 0.3s;
+}
+.drop {
+  border-bottom: 1px solid #eee;
+}
+@media (min-width: 1024px) and (max-width: 1399px) {
+  .services {
+    left: 40%;
+  }
+}
+@media (min-width: 820px) and (max-width: 1023px) {
+  .drop {
+    display: none;
+  }
+}
+
+/* ✨ تصميم الدروب داون */
+.dropdown-menu {
+  background: #ffffff; /* لون الخلفية */
+  border-radius: 8px; /* تدوير الحواف */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* ظل خفيف */
+  overflow: hidden; /* لمنع خروج العناصر */
+  opacity: 1;
+  transform: translateY(-10px); /* إخفاء أولي */
+  transition: opacity 0.3s ease, transform 0.3s ease; /* أنيميشن سلس */
+  position: absolute;
+  top: 52px;
+  left: -60px;
+  width: 200px;
+  z-index: 100;
+  visibility: hidden;
+}
+
+/* ✨ عند فتح القائمة */
+.dropdown-menu.active {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+/* ✨ عناصر القائمة */
+.dropdown-menu li {
+  list-style: none;
+  border-bottom: 1px solid #f1f1f1; /* خط خفيف بين العناصر */
+  transition: background 0.3s ease;
+}
+
+/* ✨ تأثير الـ Hover */
+.dropdown-menu li:hover {
+  background: #0d8f75;
+}
+
+/* ✨ روابط القائمة */
+.dropdown-menu li a {
+  display: block;
+  padding: 12px 16px;
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+/* ✨ تغيير لون النص عند التحويل بالفأرة */
+.dropdown-menu li:hover a {
+  color: #ffffff;
+}

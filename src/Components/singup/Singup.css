@@ -1,0 +1,30 @@
+* {
+}
+.landing {
+  background-image: url("../../assets/Tysrt2.web.png");
+  background-size: cover;
+  height: calc(100vh - 80px);
+  position: fixed;
+  width: 100%;
+}
+
+.con {
+}
+.flexcenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.container-contant {
+}
+.error {
+  border-color: red;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  display: block;
+}

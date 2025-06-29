@@ -1,0 +1,57 @@
+ else if (item.secation === "Donations") {
+    item.type === "جمعيات" ?
+                   (
+                    <HomeCards
+                    key={index}
+                    title={item.title}
+                    image={item.image}
+                    link={item.link}
+                    name={item.name}
+                    location={item.location}
+                    time={item.time}
+                    type={item.type}
+                    seatsAvailable={item.seatsAvailable}
+                    OfficialAuthority={item.OfficialAuthority}
+                    />
+                  ) : (
+                    <HomeCards
+                    key={index}
+                    title={item.title}
+                    image={item.image}
+                    link={item.link}
+                    name={item.name}
+                    location={item.location}
+                    time={item.time}
+                    type={item.type}
+                    seatsAvailable={item.seatsAvailable}
+                    OfficialAuthority={item.OfficialAuthority}
+                    />
+                  )
+                }
+                {data.map((opportunity, index) =>
+                    opportunity.type === "جمعيات" ? (
+                      <HomeCards
+                        key={index}
+                        title={opportunity.title}
+                        image={opportunity.image}
+                        link={opportunity.link}
+                        name={opportunity.name}
+                        location={opportunity.location}
+                        time={opportunity.time}
+                        type={opportunity.type}
+                        seatsAvailable={opportunity.seatsAvailable}
+                        OfficialAuthority={opportunity.OfficialAuthority}
+                      />
+                    ) : (
+                      <HomeCards
+                        key={index}
+                        title={opportunity.title}
+                        image={opportunity.image}
+                        location={opportunity.location}
+                        time={opportunity.time}
+                        type={opportunity.type}
+                        seatsAvailable={opportunity.seatsAvailable}
+                        OfficialAuthority={opportunity.OfficialAuthority}
+                      />
+                    )
+                  )}

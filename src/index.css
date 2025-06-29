@@ -1,0 +1,111 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  color: #214570;
+  overflow-y: auto;
+}
+html {
+  scroll-behavior: smooth;
+}
+@keyframes fadeIn {
+  from {
+    background-color: #3d3d3d3a;
+  }
+  to {
+    background-color: #302f2f65;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out;
+}
+/* تخصيص Scrollbar وإخفاء الأسهم */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px; /* عرض الاسكرول */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* إخفاء الأسهم */
+.custom-scrollbar::-webkit-scrollbar-button {
+  display: none;
+}
+
+.result-modal {
+  border: none;
+  margin: 0 auto;
+  margin-top: 90px;
+
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: #eee;
+}
+.details-modal {
+  border: none;
+  margin-left: auto;
+  margin-right: auto;
+
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: #eee;
+}
+
+.editedform {
+  border: none;
+  margin: 0 auto;
+  margin-top: 35px;
+
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: #eee;
+}
+.buttonshadow {
+  box-shadow: 0 -9px 1px -5px #214570;
+}
+.result-modal[open],
+.editedform[open],
+.details-modal[open] {
+  animation: slide-in-from-top 0.35s ease-out;
+}
+label {
+  margin-top: 15px;
+  margin-right: 2px;
+
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  color: black;
+}
+
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: #3970aa; /* لون العلامة */
+  cursor: pointer;
+  outline: 0;
+}
+
+.result-modal::backdrop,
+.editedform::backdrop,
+.details-modal::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+}
+.img {
+  background-image: url("../../../public/help.png");
+  background-size: cover;
+}

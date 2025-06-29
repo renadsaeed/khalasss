@@ -1,0 +1,51 @@
+export const mockItems = [
+    {
+      id: 1,
+      type: 'lost',
+      title: 'محفظة بنية اللون',
+      description: 'فقدت محفظة جلدية بنية تحتوي على بطاقات هوية ومبلغ بسيط من المال. فقدت بالقرب من منطقة وسط البلد.',
+      date: '2024-06-18',
+      location: 'وسط البلد، القاهرة',
+      image: 'https://via.placeholder.com/150',
+      contact: '01012345678',
+      user: { name: 'أحمد محمود', avatar: 'https://randomuser.me/api/portraits/men/1.jpg' },
+    },
+    {
+      id: 2,
+      type: 'found',
+      title: 'مفاتيح سيارة',
+      description: 'تم العثور على مجموعة من مفاتيح سيارة مع ميدالية فضية. وجدت في حديقة الأزهر.',
+      date: '2024-06-19',
+      location: 'حديقة الأزهر، القاهرة',
+      image: 'https://via.placeholder.com/150',
+      contact: '01123456789',
+      user: { name: 'فاطمة علي', avatar: 'https://randomuser.me/api/portraits/women/2.jpg' },
+    },
+    {
+        id: 3,
+        type: 'lost',
+        title: 'هاتف آيفون 13',
+        description: 'فقدت هاتف آيفون 13 أزرق اللون في علبة سوداء. آخر مكان كان في مول العرب.',
+        date: '2024-06-17',
+        location: 'مول العرب، 6 أكتوبر',
+        image: 'https://via.placeholder.com/150',
+        contact: '01234567890',
+        user: { name: 'محمد حسن', avatar: 'https://randomuser.me/api/portraits/men/3.jpg' },
+      },
+      {
+        id: 4,
+        type: 'found',
+        title: 'نظارة شمسية',
+        description: 'تم العثور على نظارة شمسية سوداء من نوع Ray-Ban. وجدت على أحد طاولات كافيه كوستا.',
+        date: '2024-06-20',
+        location: 'كوستا كافيه، التجمع الخامس',
+        image: 'https://via.placeholder.com/150',
+        contact: '01567890123',
+        user: { name: 'سارة عبد الله', avatar: 'https://randomuser.me/api/portraits/women/4.jpg' },
+      },
+  ];
+  
+  export const mockMatches = [
+    { id: 1, title: 'محفظة مشابهة', similarity: '85%' },
+    { id: 2, title: 'محفظة جلدية', similarity: '70%' },
+  ]; 

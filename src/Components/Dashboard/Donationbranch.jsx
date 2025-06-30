@@ -84,10 +84,10 @@ export async function Loader({ request, params }) {
 
   const user = JSON.parse(storedUser);
   const charityId = user.id;
-
+  const status = 0;
   try {
     const response = await fetch(
-      `/api/DonationOpportunity?charityId=${charityId}`
+      `/api/DonationOpportunity?charityId=${charityId}&status=${status}`
     );
 
     if (response.status === 404) {

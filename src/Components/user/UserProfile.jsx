@@ -19,7 +19,11 @@ const StarRow = ({ rating }) => (
 export default function UserProfile() {
   const navigate = useNavigate();
   const [showDonations, setShowDonations] = useState(true);
-  const [donations, setDonations] = useState([]);
+  const [donationSummary, setDonationSummary] = useState({
+    totalAmount: 0,
+    donationCount: 0,
+  });
+
   const [loadingDonations, setLoadingDonations] = useState(true);
   const [showVolunteering, setShowVolunteering] = useState(true);
   const [showHelps, setShowHelps] = useState(true);
@@ -163,10 +167,10 @@ export default function UserProfile() {
   //     });
   // }, []);
 
-  const totalDonations = donations.reduce(
-    (sum, don) => sum + (don.amount || 0),
-    0
-  );
+  // const totalDonations = donations.reduce(
+  //   (sum, don) => sum + (don.amount || 0),
+  //   0
+  // );
   const totalVolunteering = volunteering.length;
   const totalHelps = helps.length;
 
@@ -241,21 +245,17 @@ export default function UserProfile() {
         console.log("userData", userData.result);
 
         // 2️⃣ التبرعات
-        const donationRes = await fetch("/api/Donation", {
+        const donationRes = await fetch("/api/Donation/my-donations/summary", {
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: "application/json",
           },
         });
-        console.log("donationData ", donationRes);
         const donationText = await donationRes.text();
-        console.log("donationData text", donationText);
-        const donationData = donationText ? JSON.parse(donationText) : [];
+        const donationData = donationText ? JSON.parse(donationText) : {};
+
         console.log("donationData1111", donationData);
-        setDonations(
-          Array.isArray(donationData.donations) ? donationData.donations : []
-        );
-        console.log("donationData", donationData.donations);
+        setDonationSummary(donationData);
         setLoadingDonations(false);
 
         // 3️⃣ التطوع
@@ -396,17 +396,14 @@ export default function UserProfile() {
             {/* عرض عدد التبرعات والإجمالي */}
             <div className="flex flex-col items-center mb-4">
               <div className="text-xl font-bold text-[#113452]">
-                عدد التبرعات: {Array.isArray(donations) ? donations.length : 0}
+                عدد التبرعات: {donationSummary.donationCount}
               </div>
               <div className="text-xl font-bold text-[#159C88]">
-                إجمالي التبرعات:{" "}
-                {Array.isArray(donations)
-                  ? donations.reduce((sum, don) => sum + (don.amount || 0), 0)
-                  : 0}{" "}
+                إجمالي التبرعات: {donationSummary.totalAmount}
                 جنيه
               </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {loadingDonations ? (
                 <div>جاري تحميل التبرعات...</div>
               ) : Array.isArray(donations) && donations.length === 0 ? (
@@ -433,7 +430,7 @@ export default function UserProfile() {
                   </div>
                 ))
               )}
-            </div>
+            </div> */}
           </>
         )}
       </div>
@@ -474,7 +471,7 @@ export default function UserProfile() {
                   className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col items-center p-8 min-w-[270px] border border-gray-200"
                 >
                   <img
-                    src={vol.image || "/OIP.jpg"}
+                    src={vol.photoUrl || "/OIP.jpg"}
                     alt="volunteering"
                     className="w-full h-56 object-cover mb-4 rounded-lg"
                   />
@@ -652,7 +649,7 @@ export default function UserProfile() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 max-w-4xl mx-auto">
           <div className="bg-white rounded-lg border p-6 flex flex-col items-center">
             <div className="text-2xl font-bold text-[#214570] mb-1">
-              {totalDonations} جنيه
+              {donationSummary.totalAmount} جنيه
             </div>
             <div className="text-gray-500">مبلغ التبرع</div>
           </div>

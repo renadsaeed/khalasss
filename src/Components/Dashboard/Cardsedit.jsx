@@ -53,6 +53,7 @@ export default function Cardsedit({
 
       setDeleteError(""); // تأكد من تصفير الخطأ لو العملية نجحت
       setShowConfirm(false);
+      setDetailedDonation((prev) => prev.filter((item) => item.id !== id));
     } catch (err) {
       setDeleteError("فشل الاتصال بالخادم. حاول مرة أخرى.");
       console.error("خطأ في الاتصال:", err);

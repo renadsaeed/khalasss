@@ -142,7 +142,6 @@ const AddVolunteeringForm = ({ onClose, setOrganizationData }) => {
               className={className}
               value={form.title}
               onChange={handleChange}
-              required
             />
           </label>
           <label className="block text-lg text-blue-900">
@@ -153,7 +152,6 @@ const AddVolunteeringForm = ({ onClose, setOrganizationData }) => {
               value={form.description}
               className={className}
               onChange={handleChange}
-              required
             />
           </label>
           <label className="block text-lg text-blue-900">
@@ -164,7 +162,6 @@ const AddVolunteeringForm = ({ onClose, setOrganizationData }) => {
               value={form.tasks}
               onChange={handleChange}
               className={className}
-              required
             />
           </label>
           <label className="block text-lg text-blue-900">
@@ -175,7 +172,6 @@ const AddVolunteeringForm = ({ onClose, setOrganizationData }) => {
               value={form.location}
               onChange={handleChange}
               className={className}
-              required
             />
           </label>
           <label className="block text-lg text-blue-900">
@@ -186,7 +182,6 @@ const AddVolunteeringForm = ({ onClose, setOrganizationData }) => {
               className={className}
               onChange={handleChange}
               type="text"
-              required
             />
           </label>
           <label className="block text-lg text-blue-900">
@@ -197,7 +192,6 @@ const AddVolunteeringForm = ({ onClose, setOrganizationData }) => {
               value={form.type}
               className={className}
               onChange={handleChange}
-              required
             />
           </label>
           <div className="grid grid-cols-2 gap-4">
@@ -210,7 +204,6 @@ const AddVolunteeringForm = ({ onClose, setOrganizationData }) => {
                   value={form.startDate}
                   className={className}
                   onChange={handleChange}
-                  required
                 />
               </label>
             </div>
@@ -223,7 +216,6 @@ const AddVolunteeringForm = ({ onClose, setOrganizationData }) => {
                   className={className}
                   value={form.endDate}
                   onChange={handleChange}
-                  required
                 />
               </label>
             </div>
@@ -238,7 +230,6 @@ const AddVolunteeringForm = ({ onClose, setOrganizationData }) => {
                   className={className}
                   value={form.seatsAvailable}
                   onChange={handleChange}
-                  required
                 />
               </label>
             </div>
@@ -251,7 +242,6 @@ const AddVolunteeringForm = ({ onClose, setOrganizationData }) => {
                   className={className}
                   value={form.requiredAge}
                   onChange={handleChange}
-                  required
                 />
               </label>
             </div>
@@ -263,7 +253,6 @@ const AddVolunteeringForm = ({ onClose, setOrganizationData }) => {
               name="image"
               accept="image/*"
               onChange={handleChange}
-              required
             />
           </div>
           {error && <div className="form-error">{error}</div>}

@@ -8,6 +8,7 @@ import { IoFlag } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import tyarijatBg from "../tyarijat.png";
 import { getAuthToken } from "../../util/auth";
+import { useParams } from "react-router-dom";
 
 const StarRow = ({ rating }) => (
   <div style={{ display: "flex", flexDirection: "row-reverse", gap: 2 }}>
@@ -30,6 +31,7 @@ const UserProfileModern = () => {
   const [loadingAssistances, setLoadingAssistances] = useState(true);
   const detailsRef = useRef();
   const [selectedItem, setSelectedItem] = useState(null);
+  const { id } = useParams();
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -76,9 +78,7 @@ const UserProfileModern = () => {
     // استبدليه بالـ id الديناميكي إذا كان متوفر
 
     // جلب بيانات المستخدم
-    fetch(
-      "https://waslalkhair.runasp.net/api/User/62053af1-974d-42d2-a78f-9d85c32b7eb9"
-    )
+    fetch(`https://waslalkhair.runasp.net/api/User/${id}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.result) setUser(data.result);
@@ -90,7 +90,7 @@ const UserProfileModern = () => {
     const token = getAuthToken();
 
     fetch(
-      `https://waslalkhair.runasp.net/api/Assistance/GetAssistancesByUser/${user.id}`,
+      `https://waslalkhair.runasp.net/api/Assistance/GetAssistancesByUser/${id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -120,7 +120,7 @@ const UserProfileModern = () => {
     if (!user?.id) return;
     const token = getAuthToken();
 
-    fetch(`https://waslalkhair.runasp.net/api/Reviews/${user.id}`, {
+    fetch(`https://waslalkhair.runasp.net/api/Reviews/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: "application/json",

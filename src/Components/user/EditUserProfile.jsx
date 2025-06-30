@@ -1,12 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { getAuthToken } from "../../util/auth";
 
 const EditUserProfile = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI2NzIyYmM5Yy03YWE2LTQ1N2QtODFmYy0zM2Y2NGUzMDhlM2QiLCJlbWFpbCI6Im5hYmlsbm9yaGFuMzI0QGdtYWlsLmNvbSIsInVuaXF1ZV9uYW1lIjoiTm9yaGFuIE5hYmlsIEFsaSBFbCBTYXllZCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL21vYmlsZXBob25lIjoiMDEwNjE3MzUwMzEiLCJyb2xlIjoiVXNlciIsIm5iZiI6MTc1MDk1ODUxNCwiZXhwIjoxNzUzNTUwNTE0LCJpYXQiOjE3NTA5NTg1MTQsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwMTMiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDEzIn0.PuR2fDqDjdJUTVlDPQ9L_2mOaywgTsNOH6Wf56PtnGE";
+  const [originalUserData, setOriginalUserData] = useState(null);
+  const [user, setUser] = useState(null);
+  const token = getAuthToken();
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser)); // 👈 استرجاع بيانات الجمعية
+    }
+  }, []);
+
+  if (!user) {
+    console.log("user is null");
+  }
+  console.log("user ID هو:");
 
   // State للبيانات
   const [userData, setUserData] = useState({
@@ -15,73 +28,92 @@ const EditUserProfile = () => {
     phoneNumber: "",
     email: "",
     image: "",
+    imagePreview: "",
   });
 
   // جلب البيانات من الـ API
   useEffect(() => {
     // ضع التوكن الصحيح هنا
-    const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI2NzIyYmM5Yy03YWE2LTQ1N2QtODFmYy0zM2Y2NGUzMDhlM2QiLCJlbWFpbCI6Im5hYmlsbm9yaGFuMzI0QGdtYWlsLmNvbSIsInVuaXF1ZV9uYW1lIjoiTm9yaGFuIE5hYmlsIEFsaSBFbCBTYXllZCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL21vYmlsZXBob25lIjoiMDEwNjE3MzUwMzEiLCJyb2xlIjoiVXNlciIsIm5iZiI6MTc1MDk1ODUxNCwiZXhwIjoxNzUzNTUwNTE0LCJpYXQiOjE3NTA5NTg1MTQsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwMTMiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDEzIn0.PuR2fDqDjdJUTVlDPQ9L_2mOaywgTsNOH6Wf56PtnGE";
-    fetch(
-      "https://waslalkhair.runasp.net/api/User/e3476806-880a-4a7d-87fb-093559f1f90f",
-      {
-        headers: {
-          Authorization: ` Bearer ${token}`,
-        },
-      }
-    )
+    if (!user?.id) return;
+    fetch(`https://waslalkhair.runasp.net/api/User/${user.id}`, {
+      headers: {
+        Authorization: ` Bearer ${token}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         if (data.result) {
-          setUserData({
+          const fetchedData = {
             fullName: data.result.fullName || "",
             age: data.result.age || "",
             phoneNumber: data.result.phoneNumber || "",
             email: data.result.email || "",
             image: data.result.image || "",
-          });
+            imagePreview: data.result.image || "",
+          };
+          setUserData(fetchedData);
+          console.log("fetchedData", fetchedData);
+          setOriginalUserData(fetchedData); // 👈 احتفظ بنسخة للمقارنة
         }
       });
-  }, []);
+  }, [user]);
 
   // دالة لتغيير القيم في الفورم
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
-
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setUserData((prev) => ({
-          ...prev,
-          image: reader.result,
-        }));
-      };
-      reader.readAsDataURL(file);
+      const imageUrl = URL.createObjectURL(file);
+      setUserData((prev) => ({
+        ...prev,
+        image: file, // الصورة اللي هتتبعت للسيرفر
+        imagePreview: imageUrl, // الصورة اللي هتتعرض في الفورم
+      }));
     }
   };
 
   // دالة حفظ التعديلات
   const handleSave = async () => {
     const token = localStorage.getItem("token");
-    console.log("TOKEN:", token);
-    console.log("userData:", userData);
+
+    const formData = new FormData();
+    formData.append("Id", user.id);
+    formData.append("Email", userData.email?.trim() || originalUserData?.email);
+    formData.append(
+      "FullName",
+      userData.fullName?.trim() || originalUserData?.fullName
+    );
+    formData.append(
+      "PhoneNumber",
+      userData.phoneNumber?.trim() || originalUserData?.phoneNumber
+    );
+    formData.append(
+      "Age",
+      userData.age?.toString().trim() || originalUserData?.age?.toString()
+    );
+
+    // ⛔ لازم الصورة تبقى ملف فعلي مش Base64
+    if (userData.image instanceof File) {
+      formData.append("Image", userData.image);
+    }
+
     try {
       const response = await fetch(
         "https://waslalkhair.runasp.net/api/User/update-profile",
         {
           method: "PUT",
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(userData),
+          body: formData,
         }
       );
+
       const data = await response.json();
       console.log("API response:", data);
+
       if (data.isSuccess) {
         alert("تم تحديث البيانات بنجاح");
       } else {
@@ -99,10 +131,11 @@ const EditUserProfile = () => {
         <div className="flex justify-between items-center border-b pb-4 mb-6">
           <div className="flex items-center gap-4">
             <img
-              src={userData.image || "/user.png"}
+              src={userData.imagePreview ? userData.imagePreview : "/user.png"}
               alt="User"
               className="rounded-full w-20 h-20 object-cover border-2 border-gray-300"
             />
+
             <div>
               <h2 className="text-xl font-bold">{userData.fullName}</h2>
               <p className="text-gray-600">{userData.email}</p>
@@ -145,6 +178,19 @@ const EditUserProfile = () => {
               value={userData.fullName}
               onChange={handleChange}
               placeholder="أدخل اسمك"
+              className="w-full border-transparent bg-gray-100 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-100"
+            />
+          </div>
+          <div>
+            <label className="block text-gray-900 mb-2">
+              البريد الإلكتروني
+            </label>
+            <input
+              type="email"
+              name="email"
+              value={userData.email}
+              onChange={handleChange}
+              placeholder="أدخل بريدك الإلكتروني"
               className="w-full border-transparent bg-gray-100 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-100"
             />
           </div>

@@ -1,7 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import Helpdetails from "../HelpComponent/Helpdetails";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getAuthToken } from "../../util/auth";
+const StarRow = ({ rating }) => (
+  <div style={{ display: "flex", flexDirection: "row-reverse", gap: 2 }}>
+    {[1, 2, 3, 4, 5].map((i) => (
+      <span
+        key={i}
+        style={{ color: i <= rating ? "#009688" : "#ccc", fontSize: 24 }}
+      >
+        ★
+      </span>
+    ))}
+  </div>
+);
 
 export default function UserProfile() {
   const navigate = useNavigate();
@@ -25,6 +38,17 @@ export default function UserProfile() {
     img: "/user.png",
   });
   const token = getAuthToken();
+  const detailsRef = useRef();
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const openModal = (item) => {
+    setSelectedItem(item);
+    detailsRef.current?.showModal();
+  };
+
+  const closeModal = () => {
+    detailsRef.current?.close();
+  };
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -36,108 +60,108 @@ export default function UserProfile() {
     console.log("user is null");
   }
   console.log("user ID هو:");
-  useEffect(() => {
-    fetch(`https://waslalkhair.runasp.net/api/User/${user.id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.result) {
-          setUser({
-            name: data.result.fullName,
-            img: data.result.image || "/user.png",
-          });
-        }
-      });
+  // useEffect(() => {
+  //   fetch(`https://waslalkhair.runasp.net/api/User/${user.id}`)
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       if (data.result) {
+  //         setUser({
+  //           name: data.result.fullName,
+  //           img: data.result.image || "/user.png",
+  //         });
+  //       }
+  //     });
 
-    fetch("https://waslalkhair.runasp.net/api/Donation", {
-      headers: {
-        Authorization: ` Bearer ${token}`,
-        Accept: "application/json",
-      },
-    })
-      .then(async (res) => {
-        const text = await res.text();
-        if (!text) return [];
-        return JSON.parse(text);
-      })
-      .then((data) => {
-        console.log("Fetched donations from API:", data);
-        setDonations(Array.isArray(data.donations) ? data.donations : []);
-        setLoadingDonations(false);
-      })
-      .catch((err) => {
-        setLoadingDonations(false);
-      });
-  }, []);
+  //   fetch("https://waslalkhair.runasp.net/api/Donation", {
+  //     headers: {
+  //       Authorization: ` Bearer ${token}`,
+  //       Accept: "application/json",
+  //     },
+  //   })
+  //     .then(async (res) => {
+  //       const text = await res.text();
+  //       if (!text) return [];
+  //       return JSON.parse(text);
+  //     })
+  //     .then((data) => {
+  //       console.log("Fetched donations from API:", data);
+  //       setDonations(Array.isArray(data.donations) ? data.donations : []);
+  //       setLoadingDonations(false);
+  //     })
+  //     .catch((err) => {
+  //       setLoadingDonations(false);
+  //     });
+  // }, []);
 
-  useEffect(() => {
-    fetch("https://waslalkhair.runasp.net/api/Users/participations", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/json",
-      },
-    })
-      .then(async (res) => {
-        const text = await res.text();
-        if (!text) return [];
-        return JSON.parse(text);
-      })
-      .then((data) => {
-        console.log("Fetched volunteering:", data); // عرض بيانات التطوع في الكونسول
-        setVolunteering(data);
-        setLoadingVolunteering(false);
-      })
-      .catch((err) => {
-        setLoadingVolunteering(false);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch("https://waslalkhair.runasp.net/api/Users/participations", {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //       Accept: "application/json",
+  //     },
+  //   })
+  //     .then(async (res) => {
+  //       const text = await res.text();
+  //       if (!text) return [];
+  //       return JSON.parse(text);
+  //     })
+  //     .then((data) => {
+  //       console.log("Fetched volunteering:", data); // عرض بيانات التطوع في الكونسول
+  //       setVolunteering(data);
+  //       setLoadingVolunteering(false);
+  //     })
+  //     .catch((err) => {
+  //       setLoadingVolunteering(false);
+  //     });
+  // }, []);
 
-  useEffect(() => {
-    const userId = "6722bc9c-7aa6-457d-81fc-33f64e308e3d";
-    fetch(
-      `https://waslalkhair.runasp.net/api/Assistance/GetAssistancesByUser/${user.id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json",
-        },
-      }
-    )
-      .then(async (res) => {
-        const text = await res.text();
-        if (!text) return [];
-        return JSON.parse(text);
-      })
-      .then((data) => {
-        console.log("Fetched helps:", data.assistances); // عرض بيانات المساعدات في الكونسول
-        setHelps(data.assistances || []);
-        setLoadingHelps(false);
-      })
-      .catch((err) => {
-        setLoadingHelps(false);
-      });
-  }, []);
+  // useEffect(() => {
+  //   const userId = "6722bc9c-7aa6-457d-81fc-33f64e308e3d";
+  //   fetch(
+  //     `https://waslalkhair.runasp.net/api/Assistance/GetAssistancesByUser/${user.id}`,
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         Accept: "application/json",
+  //       },
+  //     }
+  //   )
+  //     .then(async (res) => {
+  //       const text = await res.text();
+  //       if (!text) return [];
+  //       return JSON.parse(text);
+  //     })
+  //     .then((data) => {
+  //       console.log("Fetched helps:", data.assistances); // عرض بيانات المساعدات في الكونسول
+  //       setHelps(data.assistances || []);
+  //       setLoadingHelps(false);
+  //     })
+  //     .catch((err) => {
+  //       setLoadingHelps(false);
+  //     });
+  // }, []);
 
-  useEffect(() => {
-    fetch("https://waslalkhair.runasp.net/api/LostItem/my-items", {
-      headers: {
-        Authorization: ` Bearer ${token}`,
-        Accept: "application/json",
-      },
-    })
-      .then(async (res) => {
-        const text = await res.text();
-        if (!text) return [];
-        return JSON.parse(text);
-      })
-      .then((data) => {
-        console.log("Fetched lost items:", data);
-        setLostItems({ results: data.results || [] }); // ✅ التعديل هنا
-        setLoadingLostItems(false);
-      })
-      .catch((err) => {
-        setLoadingLostItems(false);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch("https://waslalkhair.runasp.net/api/LostItem/my-items", {
+  //     headers: {
+  //       Authorization: ` Bearer ${token}`,
+  //       Accept: "application/json",
+  //     },
+  //   })
+  //     .then(async (res) => {
+  //       const text = await res.text();
+  //       if (!text) return [];
+  //       return JSON.parse(text);
+  //     })
+  //     .then((data) => {
+  //       console.log("Fetched lost items:", data);
+  //       setLostItems({ results: data.results || [] }); // ✅ التعديل هنا
+  //       setLoadingLostItems(false);
+  //     })
+  //     .catch((err) => {
+  //       setLoadingLostItems(false);
+  //     });
+  // }, []);
 
   const totalDonations = donations.reduce(
     (sum, don) => sum + (don.amount || 0),
@@ -156,9 +180,10 @@ export default function UserProfile() {
         }
       );
       // تحديث الـ state لإزالة العنصر من الصفحة
-      setItems((prevItems) =>
-        prevItems.filter((item) => item.itemId !== itemId)
-      );
+      setLostItems((prev) => ({
+        ...prev,
+        results: prev.results.filter((item) => item.itemId !== itemId),
+      }));
     } catch (error) {
       console.error("AxiosError:", error);
       if (error.response) {
@@ -175,8 +200,6 @@ export default function UserProfile() {
   };
 
   const handleMarkResolved = async (itemId) => {
-    const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI2NzIyYmM5Yy03YWE2LTQ1N2QtODFmYy0zM2Y2NGUzMDhlM2QiLCJlbWFpbCI6Im5hYmlsbm9yaGFuMzI0QGdtYWlsLmNvbSIsInVuaXF1ZV9uYW1lIjoiTm9yaGFuIE5hYmlsIEFsaSBFbCBTYXllZCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL21vYmlsZXBob25lIjoiMDEwNjE3MzUwMzEiLCJyb2xlIjoiVXNlciIsIm5iZiI6MTc1MDk1ODUxNCwiZXhwIjoxNzUzNTUwNTE0LCJpYXQiOjE3NTA5NTg1MTQsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjcwMTMiLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MDEzIn0.PuR2fDqDjdJUTVlDPQ9L_2mOaywgTsNOH6Wf56PtnGE";
     try {
       await axios.put(
         `https://waslalkhair.runasp.net/api/LostItem/${itemId}/mark-resolved`,
@@ -202,6 +225,121 @@ export default function UserProfile() {
       );
     }
   };
+  useEffect(() => {
+    if (!user?.id) return;
+    const fetchAllData = async () => {
+      try {
+        // 1️⃣ بيانات المستخدم
+        const userRes = await fetch(`/api/User/${user.id}`);
+        const userData = await userRes.json();
+        if (userData.result) {
+          setUser({
+            name: userData.result.fullName,
+            img: userData.result.image || "/user.png",
+          });
+        }
+        console.log("userData", userData.result);
+
+        // 2️⃣ التبرعات
+        const donationRes = await fetch("/api/Donation", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        });
+        console.log("donationData ", donationRes);
+        const donationText = await donationRes.text();
+        console.log("donationData text", donationText);
+        const donationData = donationText ? JSON.parse(donationText) : [];
+        console.log("donationData1111", donationData);
+        setDonations(
+          Array.isArray(donationData.donations) ? donationData.donations : []
+        );
+        console.log("donationData", donationData.donations);
+        setLoadingDonations(false);
+
+        // 3️⃣ التطوع
+        const volRes = await fetch("/api/Users/participations", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        });
+        const volText = await volRes.text();
+        const volData = volText ? JSON.parse(volText) : [];
+        setVolunteering(volData);
+        console.log("volantering data ", volData);
+        setLoadingVolunteering(false);
+
+        // 4️⃣ المساعدات
+        const helpsRes = await fetch(
+          `/api/Assistance/GetAssistancesByUser/${user.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: "application/json",
+            },
+          }
+        );
+        const helpsText = await helpsRes.text();
+        const helpsData = helpsText ? JSON.parse(helpsText) : [];
+        setHelps(helpsData.assistances || []);
+        console.log("helpsData", helpsData.assistances);
+        setLoadingHelps(false);
+
+        // 5️⃣ المفقودات
+        const lostRes = await fetch("/api/LostItem/my-items", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        });
+        const lostText = await lostRes.text();
+        const lostData = lostText ? JSON.parse(lostText) : [];
+        setLostItems({ results: lostData.results || [] });
+        console.log("setLostItems", lostData.results);
+        setLoadingLostItems(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchAllData();
+  }, [user?.id]);
+
+  const [reviews, setReviews] = useState([]);
+  const [loadingReviews, setLoadingReviews] = useState(true);
+
+  const fetchReviews = () => {
+    if (!user?.id) return;
+    const token = getAuthToken();
+
+    fetch(`https://waslalkhair.runasp.net/api/Reviews/${user.id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    })
+      .then(async (res) => {
+        const text = await res.text();
+        if (!text) return [];
+        return JSON.parse(text);
+      })
+      .then((data) => {
+        setReviews(data.result || []);
+        setLoadingReviews(false);
+      })
+      .catch((err) => {
+        setLoadingReviews(false);
+      });
+  };
+
+  useEffect(() => {
+    if (user?.id) {
+      fetchReviews();
+    }
+  }, [user?.id]);
+  console.log("reviwes", reviews);
 
   return (
     <div className="w-full min-h-screen bg-gray-50 p-4 md:p-6">
@@ -222,12 +360,9 @@ export default function UserProfile() {
         <div className="flex gap-4 mt-6 md:mt-0">
           <button
             className="bg-[#159C88] text-white px-6 py-2 rounded-md font-bold border border-[#117c6b] hover:bg-[#117c6b] transition-colors"
-            onClick={() => navigate("/edituserprofile")}
+            onClick={() => navigate(`/EditUserProfile/${user?.id}`)}
           >
             تعديل الملف الشخصي
-          </button>
-          <button className="bg-[#159C88] text-white px-6 py-2 rounded-md font-bold border border-[#117c6b] hover:bg-[#117c6b] transition-colors">
-            تسجيل خروج
           </button>
         </div>
       </div>
@@ -399,7 +534,7 @@ export default function UserProfile() {
                   <div
                     className="flex-1 w-full flex flex-col items-center justify-center"
                     style={{
-                      backgroundImage: `url(${imageUrl})`,
+                      // backgroundImage: `url(${imageUrl})`,
                       backgroundSize: "cover",
                       backgroundPosition: "center",
                       backgroundRepeat: "no-repeat",
@@ -413,7 +548,10 @@ export default function UserProfile() {
                       {item.title}
                     </div>
                   </div>
-                  <button className="w-full border-t border-[#bdbdbd] bg-white py-3 font-bold text-black rounded-b-2xl hover:bg-gray-100">
+                  <button
+                    onClick={() => openModal(item)}
+                    className="w-full border-t border-[#bdbdbd] bg-white py-3 font-bold text-black rounded-b-2xl hover:bg-gray-100"
+                  >
                     عرض التفاصيل
                   </button>
                 </div>
@@ -422,6 +560,15 @@ export default function UserProfile() {
           </div>
         )}
       </div>
+      {selectedItem && (
+        <Helpdetails
+          id={selectedItem.id}
+          title={selectedItem.title}
+          ref={detailsRef}
+          rest={closeModal}
+        />
+      )}
+
       {/* Lost Items Section */}
       <div className="mb-8">
         <button
@@ -461,7 +608,7 @@ export default function UserProfile() {
                   className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col items-center p-6 border border-gray-200"
                 >
                   <img
-                    src={item.image || "/default.png"}
+                    src={item.imagePath || "/default.png"}
                     alt="lost"
                     className="w-40 h-32 object-contain mb-4"
                   />
@@ -523,33 +670,40 @@ export default function UserProfile() {
           </div>
         </div>
         {/* User Reviews */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {[1, 2].map((i) => (
-            <div
-              key={i}
-              className="bg-white rounded-2xl shadow-lg p-6 flex flex-col md:flex-row items-center gap-4 border border-gray-200"
-            >
-              <div className="flex flex-col items-center md:items-end md:w-1/3">
-                <img
-                  src="/user.png"
-                  alt="user"
-                  className="w-16 h-16 rounded-full border-2 border-white shadow mb-2"
-                />
-                <div className="flex gap-1 mb-1">
-                  {[1, 2, 3, 4].map((s) => (
-                    <span key={s} className="text-[#159C88] text-xl">
-                      ★
-                    </span>
-                  ))}
-                  <span className="text-gray-300 text-xl">★</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+          {loadingReviews ? (
+            <div>جاري تحميل التقييمات...</div>
+          ) : reviews.length === 0 ? (
+            <div>لا توجد تقييمات حتى الآن.</div>
+          ) : (
+            reviews.map((review, idx) => (
+              <div
+                key={idx}
+                className="bg-white rounded-3xl shadow-lg p-6 min-w-[320px] max-w-[400px] flex flex-col items-start border border-[#f0f0f0] transition-transform hover:scale-105"
+                style={{ boxShadow: "0 8px 24px #0001" }}
+              >
+                <div className="flex items-center gap-3 mb-2 w-full">
+                  <img
+                    src={review.userImageUrl}
+                    alt={review.userName}
+                    className="w-14 h-14 rounded-full object-cover border-2 border-white shadow"
+                  />
+                  <span className="font-bold text-lg text-[#183153]">
+                    {review.userName}
+                  </span>
                 </div>
-                <div className="font-bold text-[#113452]">اسم المستخدم</div>
+                <div className="flex justify-start w-full mb-2">
+                  <StarRow rating={review.rating} />
+                </div>
+                <div className="text-gray-600 text-md text-right w-full mt-2">
+                  {review.comment}
+                </div>
+                <div className="text-gray-400 text-xs mt-2">
+                  {new Date(review.createdAt).toLocaleDateString("ar-EG")}
+                </div>
               </div>
-              <div className="text-gray-600 text-center md:text-right flex-1">
-                تجربة المستخدم
-              </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </div>

@@ -32,21 +32,18 @@ export default function Organization() {
       <div className="organiztioncontainer w-[90%] p-3  mx-auto  ">
         <div className="orginfo flex justify-between items-center max-[415px]:flex-col   ">
           <div className="orgtitle flex items-center max-[415px]:flex-col ">
-            <div className="orgimg w-[150px]  h-[150px] max-[415px]:mt-2  border border-stone-200">
-              <img src={image} alt="orgimg" className="shadow-md" />
+            <div className="orgimg w-[150px] bg-red-800  h-[150px] max-[415px]:mt-2  border border-stone-200">
+              <img
+                src={image}
+                alt="orgimg"
+                className="shadow-md w-[100%] h-[100%]"
+              />
             </div>
-            <Link
-              to="/Profile"
-              //   state={{ OfficialAuthority: OfficialAuthority, Name: name }}
-            >
-              <h2 className="mr-5 text-3xl font-bold max-[415px]:mt-5">
-                {charityName}
-              </h2>
-            </Link>
+
+            <h2 className="mr-5 text-3xl font-bold max-[415px]:mt-5">
+              {charityName}
+            </h2>
           </div>
-          <button className="w-[200px] ml-2 shadow-md max-[415px]:mt-5  bg-[#0D8F75] rounded-sm text-white px-2 py-1 h-[40px] text-xl  ">
-            تبرع الان
-          </button>
         </div>
 
         <div className="orghistory tracking-wide rounded-sm bg-[#F9FAFB] text-black text-lg font-bold p-4 mt-6">
@@ -156,11 +153,12 @@ export default function Organization() {
                 )}
 
                 {donations && donations.length > 0 ? (
-                  donations.map((donation) => (
+                  donations.map((donation, index) => (
                     <Donationcard
-                      key={donation.id}
+                      key={index}
                       title={donation.title}
                       imageUrl={donation.imageUrl}
+                      id={donation.id}
                     />
                   ))
                 ) : (

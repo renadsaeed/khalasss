@@ -30,7 +30,6 @@ const VolunteerForm = () => {
               name="name"
               placeholder="أدخل اسمك"
               className="w-full border rounded-lg p-2 text-right"
-              required
             />
             {errors?.name && (
               <p className="text-red-500 text-sm mt-1">{errors.name}</p>
@@ -51,7 +50,6 @@ const VolunteerForm = () => {
               name="phone"
               placeholder="أدخل رقم هاتفك"
               className="w-full border rounded-lg p-2 text-right"
-              required
             />
             {errors?.phone && (
               <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
@@ -70,7 +68,6 @@ const VolunteerForm = () => {
               name="address"
               placeholder="أدخل عنوانك"
               className="w-full border rounded-lg p-2 text-right"
-              required
             />
           </div>
           {errors?.address && (
@@ -90,7 +87,6 @@ const VolunteerForm = () => {
               name="nationalid"
               placeholder="أدخل رقمك القومي المكون من 16 رقم"
               className="w-full border rounded-lg p-2 text-right"
-              required
             />
             {errors?.nationalid && (
               <p className="text-red-500 text-sm mt-1">{errors.nationalid}</p>
@@ -111,7 +107,6 @@ const VolunteerForm = () => {
               name="email"
               placeholder="أدخل بريدك الإلكتروني"
               className="w-full border rounded-lg p-2 text-right"
-              required
             />
             {errors?.email && (
               <p className="text-red-500 text-sm mt-1">{errors.email}</p>
@@ -132,7 +127,6 @@ const VolunteerForm = () => {
               name="specialty"
               placeholder="أدخل تخصصك"
               className="w-full border rounded-lg p-2 text-right"
-              required
             />
             {errors?.specialty && (
               <p className="text-red-500 text-sm mt-1">{errors.specialty}</p>
@@ -166,8 +160,84 @@ const VolunteerForm = () => {
 
 export default VolunteerForm;
 
+// export async function formAction({ request, params }) {
+//   console.log("formAction fired");
+//   const data = await request.formData();
+//   const name = data.get("name") || "";
+//   const phonenumber = data.get("phone") || "";
+//   const email = data.get("email") || "";
+//   const address = data.get("address") || "";
+//   const nationalid = data.get("nationalid") || "";
+//   const specialty = data.get("specialty") || "";
+//   const opportunityId = params.opportunityId;
+//   const errors = {};
+//   if (!name.trim()) errors.name = "الاسم مطلوب";
+//   if (!address.trim()) errors.address = "العنوان مطلوب";
+//   if (!phonenumber.match(/^\d{11}$/)) errors.phone = "رقم الهاتف غير صحيح";
+//   if (!nationalid.match(/^\d{14}$/))
+//     errors.nationalid = "الرقم القومي يجب أن يكون 14 رقمًا";
+//   if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/))
+//     errors.email = "البريد الإلكتروني غير صحيح";
+//   if (!specialty.trim()) errors.specialty = "التخصص مطلوب";
+//   console.log("formAction fired after val");
+//   if (Object.keys(errors).length > 0) {
+//     console.log("Validation errors:", errors);
+
+//     return { errors };
+//   }
+//   console.log("formAction fired check");
+//   try {
+//     const token = getAuthToken();
+//     console.log(token);
+//     const response = await fetch(
+//       `/api/opportunities/${opportunityId}/participation`,
+//       {
+//         method: "POST",
+//         body: JSON.stringify({
+//           fullName: name,
+//           phoneNumber: phonenumber,
+//           email: email,
+//           address: address,
+//           nationalId: nationalid,
+//           specialization: specialty,
+//           opportunityId: opportunityId,
+//         }),
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: "Bearer " + token,
+//         },
+//       }
+//     );
+//     console.log("Body being sent:", {
+//       fullName: name,
+//       phoneNumber: phonenumber,
+//       email: email,
+//       address: address,
+//       nationalId: nationalid,
+//       specialization: specialty,
+//       opportunityId: opportunityId,
+//     });
+//     console.log("response");
+//     console.log(response);
+//     if (!response.ok) {
+//       if (response.status === 401) {
+//         return { error: "يجب عليك تسجيل الدخول أولاً لإرسال الطلب." };
+//       }
+//       if (response.status === 409) {
+//         return { error: "لقد قمت بالتقديم على هذه الفرصة من قبل." };
+//       }
+
+//       const errorText = await response.text();
+//       return { error: errorText || "حدث خطأ أثناء الإرسال." };
+//     }
+
+//     return { success: true };
+//   } catch (err) {
+//     return { error: "could not connect to server" };
+//   }
+//   return redirect("/Volantering");
+// }
 export async function formAction({ request, params }) {
-  console.log("formAction fired");
   const data = await request.formData();
   const name = data.get("name") || "";
   const phonenumber = data.get("phone") || "";
@@ -177,24 +247,31 @@ export async function formAction({ request, params }) {
   const specialty = data.get("specialty") || "";
   const opportunityId = params.opportunityId;
   const errors = {};
-  if (!name.trim()) errors.name = "الاسم مطلوب";
-  if (!address.trim()) errors.address = "العنوان مطلوب";
-  if (!phonenumber.match(/^\d{11}$/)) errors.phone = "رقم الهاتف غير صحيح";
-  if (!nationalid.match(/^\d{14}$/))
-    errors.nationalid = "الرقم القومي يجب أن يكون 14 رقمًا";
-  if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/))
-    errors.email = "البريد الإلكتروني غير صحيح";
-  if (!specialty.trim()) errors.specialty = "التخصص مطلوب";
-  console.log("formAction fired after val");
-  if (Object.keys(errors).length > 0) {
-    console.log("Validation errors:", errors);
 
-    return { errors };
+  // التحقق من القيم الفارغة برسالة موحدة
+  if (!name.trim()) errors.name = "هذا الحقل مطلوب";
+  if (!address.trim()) errors.address = "هذا الحقل مطلوب";
+  if (!phonenumber.trim()) {
+    errors.phone = "هذا الحقل مطلوب";
+  } else if (!phonenumber.match(/^\d{11}$/)) {
+    errors.phone = "رقم الهاتف غير صحيح";
   }
-  console.log("formAction fired check");
+  if (!nationalid.trim()) {
+    errors.nationalid = "هذا الحقل مطلوب";
+  } else if (!nationalid.match(/^\d{14}$/)) {
+    errors.nationalid = "الرقم القومي يجب أن يكون 14 رقمًا";
+  }
+  if (!email.trim()) {
+    errors.email = "هذا الحقل مطلوب";
+  } else if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+    errors.email = "البريد الإلكتروني غير صحيح";
+  }
+  if (!specialty.trim()) errors.specialty = "هذا الحقل مطلوب";
+
+  if (Object.keys(errors).length > 0) return { errors };
+
   try {
     const token = getAuthToken();
-    console.log(token);
     const response = await fetch(
       `/api/opportunities/${opportunityId}/participation`,
       {
@@ -214,17 +291,7 @@ export async function formAction({ request, params }) {
         },
       }
     );
-    console.log("Body being sent:", {
-      fullName: name,
-      phoneNumber: phonenumber,
-      email: email,
-      address: address,
-      nationalId: nationalid,
-      specialization: specialty,
-      opportunityId: opportunityId,
-    });
-    console.log("response");
-    console.log(response);
+
     if (!response.ok) {
       if (response.status === 401) {
         return { error: "يجب عليك تسجيل الدخول أولاً لإرسال الطلب." };
@@ -233,13 +300,22 @@ export async function formAction({ request, params }) {
         return { error: "لقد قمت بالتقديم على هذه الفرصة من قبل." };
       }
 
-      const errorText = await response.text();
-      return { error: errorText || "حدث خطأ أثناء الإرسال." };
+      const errorJson = await response.json();
+      const apiError =
+        errorJson?.errorMessages?.[0] || "حدث خطأ أثناء الإرسال.";
+
+      // ✅ ربط رسالة الخطأ المخصصة بالرقم القومي
+      if (apiError.includes("رقم قومي")) {
+        return {
+          errors: { nationalid: "الرقم القومي مكون من 14 رقمًا بالشكل الصحيح" },
+        };
+      }
+
+      return { error: apiError };
     }
 
     return { success: true };
   } catch (err) {
-    return { error: "could not connect to server" };
+    return { error: "تعذر الاتصال بالخادم." };
   }
-  return redirect("/Volantering");
 }

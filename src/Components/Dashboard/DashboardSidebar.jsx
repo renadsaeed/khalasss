@@ -5,7 +5,7 @@ import AddDonationForm from "./AddDonationForm";
 import AddVolunteeringForm from "./AddVolunteeringForm";
 import DashboardLayout from "./DashboardLayout";
 
-const DashboardSidebar = ({ setDetailedDonations }) => {
+const DashboardSidebar = ({ setDetailedDonations , setOrganizationData }) => {
   const location = useLocation();
 
   const isDonationsActive = location.pathname.includes(
@@ -91,7 +91,7 @@ const DashboardSidebar = ({ setDetailedDonations }) => {
       )}
 
       {showAddVolunteering && (
-        <AddVolunteeringForm onClose={() => setShowAddVolunteering(false)} />
+        <AddVolunteeringForm onClose={() => setShowAddVolunteering(false)} setOrganizationData={setOrganizationData} />
       )}
     </>
   );

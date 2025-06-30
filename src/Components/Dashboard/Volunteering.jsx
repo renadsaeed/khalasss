@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLoaderData } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import VolanteringCards from "./VolanteringCards";
 // import VolanteringCards from "../Volanteringcomponent/VolanteringCards"; // Import the new card component
 
@@ -7,10 +8,11 @@ import VolanteringCards from "./VolanteringCards";
 
 const Volunteering = () => {
   const [user, setUser] = useState(null);
-  const opportunities = useLoaderData();
-  const [organizationData, setOrganizationData] = useState({
-    volData: opportunities.result || [],
-  });
+  // const opportunities = useLoaderData();
+  // const [organizationData, setOrganizationData] = useState({
+  //   volData: opportunities.result || [],
+  // });
+  const { organizationData, setOrganizationData } = useOutletContext();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -69,33 +71,33 @@ const Volunteering = () => {
 
 export default Volunteering;
 
-export async function Loader({ request, params }) {
-  const storedUser = localStorage.getItem("user");
+// export async function Loader({ request, params }) {
+//   const storedUser = localStorage.getItem("user");
 
-  if (!storedUser) {
-    throw new Response("Charity not found", { status: 401 });
-  }
+//   if (!storedUser) {
+//     throw new Response("Charity not found", { status: 401 });
+//   }
 
-  const user = JSON.parse(storedUser);
-  const charityId = user.id;
+//   const user = JSON.parse(storedUser);
+//   const charityId = user.id;
 
-  try {
-    const response = await fetch(`/api/Opportunities?charityId=${charityId}`);
+//   try {
+//     const response = await fetch(`/api/Opportunities?charityId=${charityId}`);
 
-    if (response.status === 404) {
-      return []; // ← يرجّع مصفوفة فاضية بدل ما يرمي خطأ
-    }
+//     if (response.status === 404) {
+//       return []; // ← يرجّع مصفوفة فاضية بدل ما يرمي خطأ
+//     }
 
-    if (!response.ok) {
-      throw new Error("فشل تحميل فرص التطوع");
-    }
+//     if (!response.ok) {
+//       throw new Error("فشل تحميل فرص التطوع");
+//     }
 
-    const opportunitiesData = await response.json();
-    return opportunitiesData; // ← ارجعه مباشرة
-  } catch (err) {
-    console.error(err);
-    throw new Response(JSON.stringify({ message: "فشل في تحميل البيانات" }), {
-      status: 500,
-    });
-  }
-}
+//     const opportunitiesData = await response.json();
+//     return opportunitiesData; // ← ارجعه مباشرة
+//   } catch (err) {
+//     console.error(err);
+//     throw new Response(JSON.stringify({ message: "فشل في تحميل البيانات" }), {
+//       status: 500,
+//     });
+//   }
+// }

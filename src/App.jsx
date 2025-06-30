@@ -37,9 +37,8 @@ import AddDonationForm from "./Components/Dashboard/AddDonationForm";
 import AddVolunteeringForm from "./Components/Dashboard/AddVolunteeringForm";
 import UserProfileModern from "./Components/user/UserProfileModern";
 import UserProfile from "./Components/user/UserProfile";
-import Volunteering, {
-  Loader as volanteringLoader,
-} from "./Components/Dashboard/Volunteering";
+import EditUserProfile from "./Components/user/EditUserProfile";
+import Volunteering from "./Components/Dashboard/Volunteering";
 import Donationbranch, {
   Loader as donationLoader,
 } from "./Components/Dashboard/Donationbranch";
@@ -63,6 +62,10 @@ const router = createBrowserRouter([
       {
         path: "/UserProfile",
         element: <UserProfile />,
+      },
+      {
+        path: "/EditUserProfile/:id",
+        element: <EditUserProfile />,
       },
       {
         path: "/LostAndFoundPage",
@@ -117,7 +120,6 @@ const router = createBrowserRouter([
           {
             path: "Volunteering",
             element: <Volunteering />,
-            loader: volanteringLoader,
           },
           {
             path: "Donationbranch",

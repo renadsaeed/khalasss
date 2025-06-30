@@ -21,7 +21,7 @@ export default function Flutterbar() {
   console.log("fetch data");
   console.log(fetchdata);
   const opportunitiesdata = fetchdata.result;
-
+  const [hasSearched, setHasSearched] = useState(false);
   const [type, setType] = useState("جمعيه");
   const defaultData = opportunitiesdata.filter(
     (data) => data.createdBy.role === type
@@ -53,6 +53,8 @@ export default function Flutterbar() {
   function handleSearch(e) {
     e.preventDefault();
     if (!searchTerm.trim()) return;
+    setHasSearched(true); // ✅ تم تنفيذ بحث
+
     setLoading(true);
     try {
       let filtered = data;
@@ -230,6 +232,12 @@ export default function Flutterbar() {
               </button>
             </span>
           </div>
+          {!loading && hasSearched && results.length === 0 && (
+            <p className="text-center text-xl text-red-500 mt-10 mb-10">
+              لا توجد نتائج مطابقة للبحث.
+            </p>
+          )}
+
           <div className="home-contant  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {(results.length > 0 ? results : data).map((opportunity, index) =>
               opportunity.createdBy.type === "جمعيه" ? (
@@ -275,11 +283,11 @@ export default function Flutterbar() {
               )
             )}
           </div>
-          {!loading && searchTerm.trim() && results.length === 0 && (
+          {/* {!loading && searchTerm.trim() && results.length === 0 && (
             <p className="text-center text-xl text-red-500 mt-6">
               لا توجد نتائج مطابقة للبحث.
             </p>
-          )}
+          )} */}
           {loading && <p className="mt-4 text-lg">جاري تحميل النتائج...</p>}
         </div>
       </div>

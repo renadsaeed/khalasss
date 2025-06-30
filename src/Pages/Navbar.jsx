@@ -145,12 +145,6 @@ export default function Navbar() {
               <p className="ml-3 pr-6   lg:text-xl xl:text-2xl ">وصل الخير</p>
             </div>
             <div className="sing-con flex items-center text-xl">
-              <Link to="/UserProfile" className="nav-links-mobile lg:text-lg">
-                <div className="ml-[6px] w-[50px] h-[50px] bg-[#0D8F75] border-none outline-0 rounded-md flex justify-center items-center">
-                  <CiUser className="text-3xl text-white" />
-                </div>
-              </Link>
-
               <Link onClick={onLogout} className="text-xl pr-9 text-[#0D8F75]">
                 تسجيل الخروج
               </Link>

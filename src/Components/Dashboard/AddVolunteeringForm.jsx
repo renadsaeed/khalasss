@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { getAuthToken } from "../../util/auth";
 import "./scroll.css";
-const AddVolunteeringForm = ({ onClose }) => {
+const AddVolunteeringForm = ({ onClose, setOrganizationData }) => {
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -102,10 +102,10 @@ const AddVolunteeringForm = ({ onClose }) => {
         photoUrl: URL.createObjectURL(form.image),
       };
 
-      // setOrganizationData((prev) => ({
-      //   ...prev,
-      //   volData: [newOpportunity, ...prev.volData],
-      // }));
+      setOrganizationData((prev) => ({
+        ...prev,
+        volData: [newOpportunity, ...prev.volData],
+      }));
       setSuccessMessage("تم التعديل بنجاح!");
       setTimeout(() => {
         setSuccessMessage("");

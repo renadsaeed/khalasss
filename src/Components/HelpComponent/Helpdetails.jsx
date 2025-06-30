@@ -48,7 +48,7 @@ export default function Helpdetails({ id, ref, rest, title }) {
       }
     };
     detailsdata();
-  }, []);
+  }, [id]);
   console.log("date :", createdAt);
   const handleSubmitReview = async () => {
     const comment = reviewe.current?.value?.trim();

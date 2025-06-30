@@ -1,5 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import { Link } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -27,7 +28,7 @@ export default function HomeSlider() {
               className="object-cover w-full h-full"
             />
             <div
-              className="absolute top-0 right-0 w-full h-full bg-gradient-to-l from-[#0D8F75]/80 to-transparent p-10 flex flex-col justify-center items-end text-right"
+              className="absolute top-0 right-0 w-full h-full bg-gradient-to-l from-[#0D8F75]/80 to-transparent p-10 flex flex-col  justify-center items-start text-right"
               style={{
                 zIndex: 10,
                 direction: "rtl",
@@ -35,9 +36,11 @@ export default function HomeSlider() {
             >
               <h2 className="text-white text-3xl font-bold mb-2">فرصة</h2>
               <p className="text-white text-lg mb-4">للخير بين يديك</p>
-              <button className="bg-white text-[#0D8F75] px-8 py-2 rounded-full font-bold text-lg shadow">
-                تبرع الآن
-              </button>
+              <Link to="/Donation">
+                <button className="bg-white text-[#0D8F75] px-8 py-2 rounded-full font-bold text-lg shadow">
+                  تبرع الآن
+                </button>
+              </Link>
             </div>
           </div>
         </SwiperSlide>
@@ -51,17 +54,21 @@ export default function HomeSlider() {
               className="object-cover w-full h-full"
             />
             <div
-              className="absolute top-0 right-0 w-full h-full bg-gradient-to-l from-[#0D8F75]/80 to-transparent p-10 flex flex-col justify-center items-end text-right"
+              className="absolute top-0 right-0 w-full h-full bg-gradient-to-l from-[#0D8F75]/80 to-transparent p-10 flex flex-col  justify-center items-start  text-right"
               style={{
                 zIndex: 10,
                 direction: "rtl",
               }}
             >
-              <h2 className="text-white text-3xl font-bold mb-2">التطوع بصمة مُخلدة</h2>
+              <h2 className="text-white text-3xl font-bold mb-2">
+                التطوع بصمة مُخلدة
+              </h2>
               <p className="text-white text-lg mb-4">ابدأ رحلتك</p>
-              <button className="bg-white text-[#0D8F75] px-8 py-2 rounded-full font-bold text-lg shadow">
-                تطوع الآن
-              </button>
+              <Link to="/Volantering">
+                <button className="bg-white text-[#0D8F75] px-8 py-2 rounded-full font-bold text-lg shadow">
+                  تطوع الآن
+                </button>
+              </Link>
             </div>
           </div>
         </SwiperSlide>
@@ -75,17 +82,21 @@ export default function HomeSlider() {
               className="object-cover w-full h-full"
             />
             <div
-              className="absolute top-0 right-0 w-full h-full bg-gradient-to-l from-[#0D8F75]/80 to-transparent p-10 flex flex-col justify-center items-end text-right"
+              className="absolute top-0 right-0 w-full h-full bg-gradient-to-l from-[#0D8F75]/80 to-transparent p-10 flex flex-col  justify-center items-start  text-right"
               style={{
                 zIndex: 10,
                 direction: "rtl",
               }}
             >
-              <h2 className="text-white text-3xl font-bold mb-2">مشاركة الحب تصنع الفرق</h2>
+              <h2 className="text-white text-3xl font-bold mb-2">
+                مشاركة الحب تصنع الفرق
+              </h2>
               <p className="text-white text-lg mb-4">كن جزءًا من التغيير</p>
-              <button className="bg-white text-[#0D8F75] px-8 py-2 rounded-full font-bold text-lg shadow">
-                شارك الآن
-              </button>
+              <Link to="/Help">
+                <button className="bg-white text-[#0D8F75] px-8 py-2 rounded-full font-bold text-lg shadow">
+                  شارك الآن
+                </button>
+              </Link>
             </div>
           </div>
         </SwiperSlide>

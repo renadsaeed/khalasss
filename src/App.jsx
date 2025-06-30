@@ -1,4 +1,5 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createHashRouter, RouterProvider } from "react-router-dom";
+
 import Root from "./Pages/Root";
 import Home from "./Components/Homecomponents/Home";
 import OpportunityDetails, {
@@ -43,7 +44,7 @@ import Donationbranch, {
   Loader as donationLoader,
 } from "./Components/Dashboard/Donationbranch";
 import DonateNow from "./Components/DonationsComponent/Donatenow";
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <Root />,
